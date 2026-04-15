@@ -4,97 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Tech Briefing</title>
+    <title>Daily Tech Intelligence Report</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background: #f8fafc; font-family: 'Pretendard', sans-serif; }
-        .header { text-align: center; padding: 60px 20px; background: #fff; border-bottom: 5px solid #0d6efd; margin-bottom: 40px; }
-        .news-card { background: #fff; border-radius: 15px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 6px solid #0d6efd; }
-        .designer { font-size: 1.1rem; color: #0d6efd; font-weight: 600; margin-bottom: 15px; }
-        @media (min-width: 992px) { .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; } }
+        :root { --primary-blue: #0d6efd; --bg-gray: #f4f7f6; }
+        body { background: var(--bg-gray); font-family: 'Pretendard', -apple-system, sans-serif; word-break: keep-all; }
+        
+        /* 헤더 스타일 */
+        .header { text-align: center; padding: 50px 20px; background: #fff; border-bottom: 5px solid var(--primary-blue); margin-bottom: 30px; shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .header h1 { font-weight: 800; font-size: 1.8rem; color: #1a1a1a; margin-bottom: 10px; }
+        .designer { font-size: 1rem; color: var(--primary-blue); font-weight: 600; margin-bottom: 15px; letter-spacing: 0.5px; }
+        .update-time { font-size: 0.9rem; color: #777; }
+
+        /* 모바일 최적화: 카드 레이아웃 */
+        .news-grid { display: flex; flex-direction: column; gap: 20px; padding-bottom: 50px; }
+        .news-card { 
+            background: #fff; border-radius: 16px; padding: 25px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-top: 6px solid var(--primary-blue);
+            transition: transform 0.2s ease;
+        }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .badge-media { background: #f8f9fa; color: #333; font-weight: 700; padding: 5px 12px; border-radius: 8px; border: 1px solid #eee; font-size: 0.75rem; }
+        .card-no { font-weight: 900; color: #dee2e6; font-size: 1.4rem; }
+        .card-title { font-size: 1.2rem; font-weight: 800; color: #111; margin-bottom: 12px; line-height: 1.4; }
+        .card-desc { font-size: 0.95rem; color: #444; line-height: 1.7; text-align: justify; }
+
+        /* PC 버전: 3열 배치 */
+        @media (min-width: 992px) {
+            .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+            .header h1 { font-size: 2.4rem; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container mt-2">
     <header class="header">
-        <h1 class="fw-bold">Daily Tech Intelligence Report</h1>
+        <h1>Daily Tech Intelligence Report</h1>
         <div class="designer">Designed by chipdory.hwang</div>
-        <p class="text-muted mb-0">AI 자동 업데이트 (최종 갱신: 2026.04.15 04:27)</p>
+        <p class="update-time">AI 자동 뉴스 브리핑 (최종 업데이트: 2026.04.15 04:31)</p>
     </header>
+
     <div class="news-grid">
     
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">v.daum.net</span>
-            <h5 class="fw-bold mb-3">[기획] 중동쇼크 반도체로… 삼전닉스 ‘비상등’</h5>
-            <p class="text-muted small mb-0">[기획] 중동쇼크 반도체로… 삼전닉스 ‘비상등’ - v.daum.net</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">뉴시스</span>
-            <h5 class="fw-bold mb-3">헬륨·나프타 이어 황산까지…반도체 원료 수급 '빨간불'</h5>
-            <p class="text-muted small mb-0">헬륨·나프타 이어 황산까지…반도체 원료 수급 '빨간불' - 뉴시스</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">글로벌이코노믹</span>
-            <h5 class="fw-bold mb-3">러시아, ‘헬륨 수출 통제’ 전격 도입… 글로벌 반도체·의료 대란 비상</h5>
-            <p class="text-muted small mb-0">러시아, ‘헬륨 수출 통제’ 전격 도입… 글로벌 반도체·의료 대란 비상 - 글로벌이코노믹</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">한국경제</span>
-            <h5 class="fw-bold mb-3">삼성전기, 베트남 2조 투자해 '반도체 기판' 증설</h5>
-            <p class="text-muted small mb-0">삼성전기, 베트남 2조 투자해 '반도체 기판' 증설 - 한국경제</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">조선일보</span>
-            <h5 class="fw-bold mb-3">삼성전기, 베트남에 대규모 투자...차세대 반도체 기판 생산 강화</h5>
-            <p class="text-muted small mb-0">삼성전기, 베트남에 대규모 투자...차세대 반도체 기판 생산 강화 - 조선일보</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">경향신문</span>
-            <h5 class="fw-bold mb-3">[단독] AI 도입 콜센터, 월급도 깎았다···대체 1순위? “자르기 쉬워 잘랐을 뿐”[딸깍, 노동②]</h5>
-            <p class="text-muted small mb-0">[단독] AI 도입 콜센터, 월급도 깎았다···대체 1순위? “자르기 쉬워 잘랐을 뿐”[딸깍, 노동②] - 경향신문</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">AI타임스</span>
-            <h5 class="fw-bold mb-3">오픈AI, '미소스'에 맞설 'GPT-5.4-사이버' 공개...신청 통해 배포 확대</h5>
-            <p class="text-muted small mb-0">오픈AI, '미소스'에 맞설 'GPT-5.4-사이버' 공개...신청 통해 배포 확대 - AI타임스</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">Chosunbiz</span>
-            <h5 class="fw-bold mb-3">오픈AI도 보안 특화 ‘GPT 사이버’ 공개…앤트로픽 ‘미토스’와 경쟁 - 조선비즈</h5>
-            <p class="text-muted small mb-0">오픈AI도 보안 특화 ‘GPT 사이버’ 공개…앤트로픽 ‘미토스’와 경쟁 - 조선비즈 - Chosunbiz</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">뉴시스</span>
-            <h5 class="fw-bold mb-3">AI 해킹 현실화 우려에…정부, 통신·플랫폼 이어 보안업계도 점검</h5>
-            <p class="text-muted small mb-0">AI 해킹 현실화 우려에…정부, 통신·플랫폼 이어 보안업계도 점검 - 뉴시스</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">v.daum.net</span>
-            <h5 class="fw-bold mb-3">더 똑똑해진 ‘스폿…AI로 복잡한 환경 인식하고 자율행동 가능해져</h5>
-            <p class="text-muted small mb-0">더 똑똑해진 ‘스폿…AI로 복잡한 환경 인식하고 자율행동 가능해져 - v.daum.net</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">전자신문</span>
-            <h5 class="fw-bold mb-3">청년 과학기술인 R&D 기획부터 실증까지 경험…KIRD 리얼챌린지 참가팀 모집</h5>
-            <p class="text-muted small mb-0">청년 과학기술인 R&D 기획부터 실증까지 경험…KIRD 리얼챌린지 참가팀 모집 - 전자신문</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">사이언스타임즈</span>
-            <h5 class="fw-bold mb-3">[과학의 달 특집] AI는 우리를 대체할까 확장할까</h5>
-            <p class="text-muted small mb-0">[과학의 달 특집] AI는 우리를 대체할까 확장할까 - 사이언스타임즈</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">지디넷코리아</span>
-            <h5 class="fw-bold mb-3">'센트룸', 과학으로 입증하는 멀티비타민…소비자와 직접 소통</h5>
-            <p class="text-muted small mb-0">'센트룸', 과학으로 입증하는 멀티비타민…소비자와 직접 소통 - 지디넷코리아</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">한겨레</span>
-            <h5 class="fw-bold mb-3">‘그린 암모니아’의 귀환 [강석기의 과학풍경]</h5>
-            <p class="text-muted small mb-0">‘그린 암모니아’의 귀환 [강석기의 과학풍경] - 한겨레</p>
-        </div>
-        <div class="news-card">
-            <span class="badge bg-light text-dark mb-2 border">v.daum.net</span>
-            <h5 class="fw-bold mb-3">복잡한 과학 연구에선 과학자 못따라잡는 AI</h5>
-            <p class="text-muted small mb-0">복잡한 과학 연구에선 과학자 못따라잡는 AI - v.daum.net</p>
-        </div></div></div></body></html>
+    </div>
+    <footer style="text-align:center; padding:40px; color:#aaa; font-size:0.8rem;">
+        © 2026 Designed by chipdory.hwang | Powered by GitHub Actions
+    </footer>
+</div>
+</body>
+</html>
+    

@@ -2,45 +2,40 @@ name: Daily News Scraper
 
 on:
   schedule:
-    - cron: '0 21 * * *'  # 한국 시간 오전 6시
-  workflow_dispatch:      # 수동 실행 버튼 활성화
+    # 한국 시간 기준 매일 오전 6시 (UTC 21:00)
+    - cron: '0 21 * * *'
+  workflow_dispatch: # 수동 실행 버튼 활성화
 
 permissions:
-  contents: write         # 쓰기 권한 부여
+  contents: write # 깃허브 저장소에 파일을 쓸 수 있는 권한 허용
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: true
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install feedparser
+        run: |
+          python -m pip install --upgrade pip
+          # 본문 추출을 위해 필요한 라이브러리들입니다.
+          pip install feedparser requests beautifulsoup4
 
       - name: Run news update script
-        run: python update_news.py
+        run: |
+          python update_news.py
 
       - name: Commit and Push changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # index.html이 없으면 빈 파일이라도 생성해서 에러 방지
-          touch index.html
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git add index.html
-          
-          # 변경사항이 있을 때만 커밋 및 푸시
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Auto-update news: $(date +'%Y-%m-%d %H:%M')"
-            git push origin HEAD:main
-          fi
+          # 변경사항이 있을 때만 커밋 (에러 방지)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Daily news update: $(date +'%Y-%m-%d %H:%M')" && git push)

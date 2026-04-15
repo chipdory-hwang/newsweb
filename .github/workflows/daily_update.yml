@@ -2,8 +2,12 @@ name: Daily News Scraper
 
 on:
   schedule:
-    - cron: '0 21 * * *'  # 한국 시간 매일 오전 6시 (UTC 21:00)
-  workflow_dispatch:      # 수동으로도 실행할 수 있게 버튼 활성화
+    - cron: '0 21 * * *'  # 한국 시간 매일 오전 6시
+  workflow_dispatch:      # 수동 실행 버튼 활성화
+
+# 핵심: 깃허브 액션에 저장소 쓰기 권한을 부여합니다 (에러 128 해결)
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -28,5 +32,6 @@ jobs:
           git config --global user.name "chipdory-bot"
           git config --global user.email "bot@github.com"
           git add index.html
+          # 변경사항이 있을 때만 커밋 (없으면 스킵)
           git commit -m "Auto-update news: $(date)" || exit 0
           git push

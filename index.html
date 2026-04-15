@@ -4,53 +4,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Tech Intelligence Report</title>
+    <title>Daily Tech Intelligence</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root { --primary-blue: #0d6efd; --bg-gray: #f4f7f6; }
-        body { background: var(--bg-gray); font-family: 'Pretendard', -apple-system, sans-serif; word-break: keep-all; }
-        
-        /* 헤더 스타일 */
-        .header { text-align: center; padding: 50px 20px; background: #fff; border-bottom: 5px solid var(--primary-blue); margin-bottom: 30px; shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .header h1 { font-weight: 800; font-size: 1.8rem; color: #1a1a1a; margin-bottom: 10px; }
-        .designer { font-size: 1rem; color: var(--primary-blue); font-weight: 600; margin-bottom: 15px; letter-spacing: 0.5px; }
-        .update-time { font-size: 0.9rem; color: #777; }
-
-        /* 모바일 최적화: 카드 레이아웃 */
-        .news-grid { display: flex; flex-direction: column; gap: 20px; padding-bottom: 50px; }
-        .news-card { 
-            background: #fff; border-radius: 16px; padding: 25px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-top: 6px solid var(--primary-blue);
-            transition: transform 0.2s ease;
-        }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .badge-media { background: #f8f9fa; color: #333; font-weight: 700; padding: 5px 12px; border-radius: 8px; border: 1px solid #eee; font-size: 0.75rem; }
-        .card-no { font-weight: 900; color: #dee2e6; font-size: 1.4rem; }
-        .card-title { font-size: 1.2rem; font-weight: 800; color: #111; margin-bottom: 12px; line-height: 1.4; }
-        .card-desc { font-size: 0.95rem; color: #444; line-height: 1.7; text-align: justify; }
-
-        /* PC 버전: 3열 배치 */
-        @media (min-width: 992px) {
-            .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-            .header h1 { font-size: 2.4rem; }
-        }
+        body { background: #f0f2f5; font-family: 'Pretendard', -apple-system, sans-serif; }
+        .header { text-align: center; padding: 40px 20px; background: #fff; border-bottom: 6px solid #0056b3; margin-bottom: 25px; }
+        .designer { font-size: 1.1rem; color: #0056b3; font-weight: 700; margin-bottom: 8px; }
+        .news-grid { display: flex; flex-direction: column; gap: 15px; padding: 0 15px 40px; max-width: 800px; margin: 0 auto; }
+        .news-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid #0056b3; }
+        .badge-media { background: #e7f1ff; color: #0056b3; font-weight: 700; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; }
+        .card-title { font-size: 1.1rem; font-weight: 800; color: #1a1a1a; margin: 10px 0; line-height: 1.4; }
+        .card-desc { font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
     </style>
 </head>
 <body>
-<div class="container mt-2">
     <header class="header">
-        <h1>Daily Tech Intelligence Report</h1>
         <div class="designer">Designed by chipdory.hwang</div>
-        <p class="update-time">AI 자동 뉴스 브리핑 (최종 업데이트: 2026.04.15 04:47)</p>
+        <h1 class="fw-bold" style="font-size: 1.5rem;">Tech Intelligence Report</h1>
+        <p class="text-muted small mb-0">분야: 반도체 · AI · IT · 과학 (2026.04.15 04:50)</p>
     </header>
-
     <div class="news-grid">
     
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">중앙일보</span>
+                <span style="color:#dee2e6; font-weight:900;">01</span>
+            </div>
+            <div class="card-title">“하반기 삼전닉스보다 더 뛴다” 전쟁에도 뜬 반도체 K장비주 5</div>
+            <div class="card-desc">“하반기 삼전닉스보다 더 뛴다” 전쟁에도 뜬 반도체 K장비주 5&nbsp;&nbsp;중앙일보...</div>
+        </div>
+        
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">한국경제</span>
+                <span style="color:#dee2e6; font-weight:900;">02</span>
+            </div>
+            <div class="card-title">"망한다" 비웃던 일본 꺾었다…'AI 심장' 겨눈 반도체의 나라</div>
+            <div class="card-desc">"망한다" 비웃던 일본 꺾었다…'AI 심장' 겨눈 반도체의 나라&nbsp;&nbsp;한국경제...</div>
+        </div>
+        
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">이글루코퍼레이션</span>
+                <span style="color:#dee2e6; font-weight:900;">03</span>
+            </div>
+            <div class="card-title">[AI Report] AI 패권 경쟁의 현재: 빅테크는 어디에 돈을 쓰고 있는가</div>
+            <div class="card-desc">[AI Report] AI 패권 경쟁의 현재: 빅테크는 어디에 돈을 쓰고 있는가&nbsp;&nbsp;이글루코퍼레이션...</div>
+        </div>
+        
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">조선일보</span>
+                <span style="color:#dee2e6; font-weight:900;">04</span>
+            </div>
+            <div class="card-title">美, 구형 반도체 장비 中 수출도 막는다... 첨단 기술 이어 생산 능력까지 차단 나서</div>
+            <div class="card-desc">美, 구형 반도체 장비 中 수출도 막는다... 첨단 기술 이어 생산 능력까지 차단 나서&nbsp;&nbsp;조선일보...</div>
+        </div>
+        
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">samsung.com</span>
+                <span style="color:#dee2e6; font-weight:900;">05</span>
+            </div>
+            <div class="card-title">삼성전자, 2026년형 TV 신제품 출시…AI TV 대중화 시대 연다</div>
+            <div class="card-desc">삼성전자, 2026년형 TV 신제품 출시…AI TV 대중화 시대 연다&nbsp;&nbsp;samsung.com...</div>
+        </div>
+        
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">문화체육관광부 한국문화원</span>
+                <span style="color:#dee2e6; font-weight:900;">06</span>
+            </div>
+            <div class="card-title">코리아넷뉴스 - 한국, 인구당 AI 특허 세계 1위···'주목할 만한 모델' 보유 3위</div>
+            <div class="card-desc">코리아넷뉴스 - 한국, 인구당 AI 특허 세계 1위···'주목할 만한 모델' 보유 3위&nbsp;&nbsp;문화체육관광부 한국문화원...</div>
+        </div>
+        
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">히트뉴스</span>
+                <span style="color:#dee2e6; font-weight:900;">07</span>
+            </div>
+            <div class="card-title">복지부, 권역책임의료기관 AI 진료시스템 도입 120억 지원</div>
+            <div class="card-desc">복지부, 권역책임의료기관 AI 진료시스템 도입 120억 지원&nbsp;&nbsp;히트뉴스...</div>
+        </div>
+        
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">v.daum.net</span>
+                <span style="color:#dee2e6; font-weight:900;">08</span>
+            </div>
+            <div class="card-title">영국·프랑스도 제쳤다... 한국, '주목할 만한 AI 모델' 보유국 세계 3위</div>
+            <div class="card-desc">영국·프랑스도 제쳤다... 한국, '주목할 만한 AI 모델' 보유국 세계 3위&nbsp;&nbsp;v.daum.net...</div>
+        </div>
+        
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">연합뉴스</span>
+                <span style="color:#dee2e6; font-weight:900;">09</span>
+            </div>
+            <div class="card-title">정책평가연구원, '페리AI 2.0' 출시…정책 분석·예측 기능까지</div>
+            <div class="card-desc">정책평가연구원, '페리AI 2.0' 출시…정책 분석·예측 기능까지&nbsp;&nbsp;연합뉴스...</div>
+        </div>
+        
+        <div class="news-card">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">의학신문</span>
+                <span style="color:#dee2e6; font-weight:900;">10</span>
+            </div>
+            <div class="card-title">국립대병원 등 권역책임기관 AI 진료시스템 120억 지원</div>
+            <div class="card-desc">국립대병원 등 권역책임기관 AI 진료시스템 120억 지원&nbsp;&nbsp;의학신문...</div>
+        </div>
+        
     </div>
-    <footer style="text-align:center; padding:40px; color:#aaa; font-size:0.8rem;">
-        © 2026 Designed by chipdory.hwang | Powered by GitHub Actions
+    <footer style="text-align:center; padding:30px; color:#999; font-size:0.75rem;">
+        본 리포트는 매일 자동으로 갱신됩니다.
     </footer>
-</div>
 </body>
 </html>
     

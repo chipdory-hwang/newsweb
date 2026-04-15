@@ -8,38 +8,27 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 def get_latest_news():
     all_news = []
-    # 이전 사이트와 동일한 표준 구글 뉴스 RSS 주소
+    # 최적화된 구글 뉴스 RSS 주소
     target_url = "https://news.google.com/rss/search?q=%EB%B0%98%EB%8F%84%EC%B2%B4+OR+AI+OR+IT+OR+%EA%B3%BC%ED%95%99&hl=ko&gl=KR&ceid=KR:ko"
     
     try:
         feed = feedparser.parse(target_url)
         
         for entry in feed.entries[:10]:
-            # 1. 제목과 매체 분리
+            # 제목과 매체 분리
             full_title = entry.title
             title, media = full_title, "뉴스"
             if " - " in full_title:
                 parts = full_title.rsplit(" - ", 1)
                 title, media = parts[0], parts[1]
 
-            # 2. RSS 원본 요약본 가져오기 (가공 최소화)
-            # summary_detail 혹은 summary에 담긴 원문을 그대로 사용합니다.
-            raw_desc = entry.get('summary', '')
-            
-            # HTML 태그만 제거 (내용 요약이나 문구 추가 절대 안 함)
-            clean_desc = re.sub('<[^<]+?>', '', raw_desc)
-            
-            # 구글 뉴스 특유의 꼬리말만 잘라내기
-            clean_desc = clean_desc.split("전체 기사 보기")[0].strip()
-
             all_news.append({
-                "media": media,
+                "media": media.strip(),
                 "title": title.strip(),
-                "desc": clean_desc,
                 "link": entry.link
             })
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"데이터 수집 중 에러: {e}")
             
     return all_news
 
@@ -53,47 +42,74 @@ def update_html(news_data):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Intelligence Report</title>
+    <title>Tech Intelligence Briefing</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        body {{ background: #f8f9fa; font-family: 'Pretendard', sans-serif; color: #333; }}
-        .header {{ 
-            text-align: center; padding: 40px 20px; background: #fff; 
-            border-bottom: 6px solid #0056b3; margin-bottom: 30px; 
+        body {{ background: #ffffff; font-family: 'Pretendard', sans-serif; color: #333; padding: 20px; }}
+        .header {{ text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #333; }}
+        .designer {{ font-weight: 700; color: #0056b3; margin-bottom: 5px; display: block; }}
+        .news-table {{ width: 100%; max-width: 1000px; margin: 0 auto; border-collapse: collapse; }}
+        .news-table th {{ background: #f8f9fa; color: #111; font-weight: 800; border-top: 2px solid #333; border-bottom: 1px solid #ddd; padding: 12px; text-align: center; }}
+        .news-table td {{ padding: 15px 10px; border-bottom: 1px solid #eee; vertical-align: middle; }}
+        .num {{ text-align: center; font-weight: 600; color: #888; width: 50px; }}
+        .media {{ text-align: center; font-weight: 700; color: #0056b3; width: 120px; }}
+        .title {{ font-weight: 500; color: #222; }}
+        .source-btn {{ 
+            display: inline-block; padding: 4px 10px; background: #333; color: #fff; 
+            text-decoration: none; border-radius: 4px; font-size: 0.8rem; font-weight: 600;
+            white-space: nowrap;
         }}
-        .designer {{ color: #0056b3; font-weight: 700; border: 2px solid #0056b3; display: inline-block; padding: 3px 12px; border-radius: 5px; margin-bottom: 10px; font-size: 0.9rem; }}
-        .news-grid {{ max-width: 800px; margin: 0 auto; padding: 0 15px 60px; }}
-        .news-card {{ 
-            background: #fff; border-radius: 15px; padding: 25px; margin-bottom: 20px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 6px solid #0056b3;
-            text-decoration: none; display: block; color: inherit;
+        .source-btn:hover {{ background: #0056b3; color: #fff; }}
+        @media (max-width: 600px) {{
+            .news-table {{ font-size: 0.85rem; }}
+            .media {{ width: 80px; }}
+            .source-btn {{ padding: 3px 6px; font-size: 0.7rem; }}
         }}
-        .badge-media {{ background: #e7f1ff; color: #0056b3; font-weight: 700; padding: 4px 10px; border-radius: 5px; font-size: 0.8rem; }}
-        .card-title {{ font-size: 1.25rem; font-weight: 800; color: #000; margin: 12px 0; line-height: 1.4; }}
-        .card-desc {{ font-size: 1rem; color: #444; line-height: 1.7; text-align: justify; }}
     </style>
 </head>
 <body>
     <header class="header">
-        <div class="designer">Designed by chipdory.hwang</div>
-        <h2 class="fw-bold">Tech Intelligence Report</h2>
-        <p class="text-muted small mb-0">{today} 업데이트</p>
+        <span class="designer">Designed by chipdory.hwang</span>
+        <h2 class="fw-bold">Tech Intelligence Briefing</h2>
+        <p class="text-muted small mb-0">분야: 반도체 · AI · IT · 과학 | {today}</p>
     </header>
-    <div class="news-grid">
+
+    <div class="table-responsive">
+        <table class="news-table">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>매체</th>
+                    <th>제목</th>
+                    <th>원본출처</th>
+                </tr>
+            </thead>
+            <tbody>
     """
+    
     for i, news in enumerate(news_data):
         html_content += f"""
-        <a href="{news['link']}" target="_blank" class="news-card">
-            <div class="d-flex justify-content-between align-items-center">
-                <span class="badge-media">{news['media']}</span>
-                <span style="color:#eee; font-weight:900; font-size:1.5rem;">{i+1:02d}</span>
-            </div>
-            <div class="card-title">{news['title']}</div>
-            <div class="card-desc">{news['desc']}</div>
-        </a>
+                <tr>
+                    <td class="num">{i+1:02d}</td>
+                    <td class="media">{news['media']}</td>
+                    <td class="title">{news['title']}</td>
+                    <td class="text-center">
+                        <a href="{news['link']}" target="_blank" class="source-btn">원본확인</a>
+                    </td>
+                </tr>
         """
-    html_content += "</div></body></html>"
+
+    html_content += """
+            </tbody>
+        </table>
+    </div>
+    <footer style="text-align:center; margin-top:50px; color:#999; font-size:0.8rem;">
+        매일 아침 자동으로 갱신되는 텍스트 기반 브리핑 서비스입니다.
+    </footer>
+</body>
+</html>
+    """
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_content)
 

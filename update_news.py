@@ -2,44 +2,55 @@ import feedparser
 import datetime
 import ssl
 import re
+import os
 
-# SSL 인증서 문제 해결
+# SSL 보안 에러 무시 설정
 ssl._create_default_https_context = ssl._create_unverified_context
 
 def get_latest_news():
     all_news = []
-    # 요청하신 5개 주요 매체 RSS
-    RSS_FEEDS = {
-        "전자신문": "https://www.etnews.com/section/main/rss",
-        "디지털타임스": "http://www.dt.co.kr/rss/dt_all.xml",
-        "인공지능신문": "https://www.aitimes.kr/rss/all.xml",
-        "NYT(Tech)": "https://rss.nytimes.com/services/xml/rss/ntms/technology.xml",
-        "IEEE Spectrum": "https://spectrum.ieee.org/rss/blog/spectrometer/fulltext"
-    }
+    # 가장 차단이 적은 구글 뉴스 통합 검색 주소 (반도체, AI, IT, 과학)
+    # 한국어(hl=ko)와 한국 지역(gl=KR) 설정 포함
+    target_url = "https://news.google.com/rss/search?q=%EB%B0%98%EB%8F%84%EC%B2%B4+OR+AI+OR+IT+OR+%EA%B3%BC%ED%95%99&hl=ko&gl=KR&ceid=KR:ko"
     
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    # 브라우저처럼 보이게 하는 헤더 정보
+    user_agent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1'
     
-    for media, url in RSS_FEEDS.items():
-        try:
-            feed = feedparser.parse(url, agent=user_agent)
-            # 매체별로 딱 3개씩만 발췌
-            for entry in feed.entries[:3]:
-                # HTML 태그 제거 및 요약 정리
-                summary = entry.summary if 'summary' in entry else "상세 내용은 원문을 확인해주세요."
-                summary = re.sub('<[^<]+?>', '', summary) # 태그 제거
-                summary = summary.replace('&nbsp;', ' ').strip()
-                summary = summary[:180] + "..." if len(summary) > 180 else summary
-                
-                all_news.append({
-                    "media": media,
-                    "title": entry.title.strip(),
-                    "desc": summary
-                })
-        except:
-            continue
+    try:
+        feed = feedparser.parse(target_url, agent=user_agent)
+        
+        for entry in feed.entries:
+            if len(all_news) >= 10: break # 딱 10건만 수집
+            
+            # 매체명과 제목 분리 (구글 뉴스는 '제목 - 매체명' 형식)
+            full_title = entry.title
+            if " - " in full_title:
+                title_parts = full_title.rsplit(" - ", 1)
+                title = title_parts[0]
+                media = title_parts[1]
+            else:
+                title = full_title
+                media = "뉴스"
+
+            # 요약 내용 정제 (HTML 태그 제거)
+            summary = re.sub('<[^<]+?>', '', entry.summary) if 'summary' in entry else "상세 내용은 클릭하여 확인하세요."
+            
+            all_news.append({
+                "media": media,
+                "title": title.strip(),
+                "desc": summary[:150].strip() + "..."
+            })
+    except Exception as e:
+        print(f"데이터 수집 중 에러 발생: {e}")
+            
     return all_news
 
 def update_html(news_data):
+    # [핵심] 수집된 뉴스가 없으면 파일 생성 과정을 중단하여 기존 index.html을 보존함
+    if not news_data or len(news_data) < 1:
+        print("수집된 뉴스가 없어 업데이트를 취소합니다. 기존 파일을 유지합니다.")
+        return
+
     today = datetime.datetime.now().strftime("%Y.%m.%d %H:%M")
     
     html_content = f"""
@@ -48,55 +59,34 @@ def update_html(news_data):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Tech Intelligence Report</title>
+    <title>Daily Tech Intelligence</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root {{ --primary-blue: #0d6efd; --bg-gray: #f4f7f6; }}
-        body {{ background: var(--bg-gray); font-family: 'Pretendard', -apple-system, sans-serif; word-break: keep-all; }}
-        
-        /* 헤더 스타일 */
-        .header {{ text-align: center; padding: 50px 20px; background: #fff; border-bottom: 5px solid var(--primary-blue); margin-bottom: 30px; shadow: 0 4px 10px rgba(0,0,0,0.05); }}
-        .header h1 {{ font-weight: 800; font-size: 1.8rem; color: #1a1a1a; margin-bottom: 10px; }}
-        .designer {{ font-size: 1rem; color: var(--primary-blue); font-weight: 600; margin-bottom: 15px; letter-spacing: 0.5px; }}
-        .update-time {{ font-size: 0.9rem; color: #777; }}
-
-        /* 모바일 최적화: 카드 레이아웃 */
-        .news-grid {{ display: flex; flex-direction: column; gap: 20px; padding-bottom: 50px; }}
-        .news-card {{ 
-            background: #fff; border-radius: 16px; padding: 25px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-top: 6px solid var(--primary-blue);
-            transition: transform 0.2s ease;
-        }}
-        .card-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }}
-        .badge-media {{ background: #f8f9fa; color: #333; font-weight: 700; padding: 5px 12px; border-radius: 8px; border: 1px solid #eee; font-size: 0.75rem; }}
-        .card-no {{ font-weight: 900; color: #dee2e6; font-size: 1.4rem; }}
-        .card-title {{ font-size: 1.2rem; font-weight: 800; color: #111; margin-bottom: 12px; line-height: 1.4; }}
-        .card-desc {{ font-size: 0.95rem; color: #444; line-height: 1.7; text-align: justify; }}
-
-        /* PC 버전: 3열 배치 */
-        @media (min-width: 992px) {{
-            .news-grid {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }}
-            .header h1 {{ font-size: 2.4rem; }}
-        }}
+        body {{ background: #f0f2f5; font-family: 'Pretendard', -apple-system, sans-serif; }}
+        .header {{ text-align: center; padding: 40px 20px; background: #fff; border-bottom: 6px solid #0056b3; margin-bottom: 25px; }}
+        .designer {{ font-size: 1.1rem; color: #0056b3; font-weight: 700; margin-bottom: 8px; }}
+        .news-grid {{ display: flex; flex-direction: column; gap: 15px; padding: 0 15px 40px; max-width: 800px; margin: 0 auto; }}
+        .news-card {{ background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid #0056b3; }}
+        .badge-media {{ background: #e7f1ff; color: #0056b3; font-weight: 700; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; }}
+        .card-title {{ font-size: 1.1rem; font-weight: 800; color: #1a1a1a; margin: 10px 0; line-height: 1.4; }}
+        .card-desc {{ font-size: 0.9rem; color: #4b5563; line-height: 1.6; }}
     </style>
 </head>
 <body>
-<div class="container mt-2">
     <header class="header">
-        <h1>Daily Tech Intelligence Report</h1>
         <div class="designer">Designed by chipdory.hwang</div>
-        <p class="update-time">AI 자동 뉴스 브리핑 (최종 업데이트: {today})</p>
+        <h1 class="fw-bold" style="font-size: 1.5rem;">Tech Intelligence Report</h1>
+        <p class="text-muted small mb-0">분야: 반도체 · AI · IT · 과학 ({today})</p>
     </header>
-
     <div class="news-grid">
     """
     
     for i, news in enumerate(news_data):
         html_content += f"""
         <div class="news-card">
-            <div class="card-header">
-                <span class="badge-media">{news['media']}</span>
-                <span class="card-no">{i+1:02d}</span>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge-media text-truncate" style="max-width: 150px;">{news['media']}</span>
+                <span style="color:#dee2e6; font-weight:900;">{i+1:02d}</span>
             </div>
             <div class="card-title">{news['title']}</div>
             <div class="card-desc">{news['desc']}</div>
@@ -105,10 +95,9 @@ def update_html(news_data):
 
     html_content += """
     </div>
-    <footer style="text-align:center; padding:40px; color:#aaa; font-size:0.8rem;">
-        © 2026 Designed by chipdory.hwang | Powered by GitHub Actions
+    <footer style="text-align:center; padding:30px; color:#999; font-size:0.75rem;">
+        본 리포트는 매일 자동으로 갱신됩니다.
     </footer>
-</div>
 </body>
 </html>
     """

@@ -3,10 +3,10 @@ name: Daily News Scraper
 on:
   schedule:
     - cron: '0 21 * * *'  # 한국 시간 오전 6시
-  workflow_dispatch:      # 수동 실행 버튼
+  workflow_dispatch:      # 수동 실행 버튼 활성화
 
 permissions:
-  contents: write
+  contents: write         # 쓰기 권한 부여
 
 jobs:
   build:
@@ -15,8 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          # 핵심: 인증을 위해 토큰을 명시적으로 사용
-          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -31,18 +30,17 @@ jobs:
 
       - name: Commit and Push changes
         run: |
-          # 봇 계정 설정
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
+          # index.html이 없으면 빈 파일이라도 생성해서 에러 방지
+          touch index.html
           git add index.html
           
-          # 변경 사항이 있는지 확인 후 커밋
+          # 변경사항이 있을 때만 커밋 및 푸시
           if git diff --staged --quiet; then
             echo "No changes to commit"
-            exit 0
           else
             git commit -m "Auto-update news: $(date +'%Y-%m-%d %H:%M')"
-            # 권한 에러 방지를 위해 토큰이 포함된 URL로 푸시
-            git push origin main
+            git push origin HEAD:main
           fi

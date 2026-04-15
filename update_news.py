@@ -6,50 +6,36 @@ import re
 # SSL 보안 설정
 ssl._create_default_https_context = ssl._create_unverified_context
 
-def clean_summary(text, title):
-    """요약 내용을 풍성하게 정제하고 부족하면 보충"""
-    if not text or len(text) < 20:
-        # 요약이 너무 짧으면 제목을 활용해 풍성한 문장 생성
-        return f"본 기사는 {title}에 관한 최신 핵심 소식을 다루고 있습니다. 기술 업계의 주요 변화와 시장 트렌드를 반영하는 중요한 이슈로, 상세 내용은 원문을 통해 심도 있게 확인하실 수 있습니다."
-    
-    # HTML 태그 제거 및 불필요한 문구 정리
-    text = re.sub('<[^<]+?>', '', text)
-    text = text.split("전체 기사 보기")[0]
-    text = text.split("Google 뉴스에서")[0]
-    
-    # 최소 150자 이상 확보 (풍성함을 위해)
-    if len(text) < 100:
-        text += f" 관련하여 IT 업계와 과학계의 이목이 집중되고 있으며, 향후 기술 발전 방향에 중요한 지표가 될 것으로 전망됩니다."
-        
-    return text.strip()
-
 def get_latest_news():
     all_news = []
-    # 검색 쿼리를 더 구체적으로 변경 (더 풍성한 데이터를 유도)
+    # 이전 사이트와 동일한 표준 구글 뉴스 RSS 주소
     target_url = "https://news.google.com/rss/search?q=%EB%B0%98%EB%8F%84%EC%B2%B4+OR+AI+OR+IT+OR+%EA%B3%BC%ED%95%99&hl=ko&gl=KR&ceid=KR:ko"
     
     try:
         feed = feedparser.parse(target_url)
-        for entry in feed.entries[:15]:
-            if len(all_news) >= 10: break
-            
+        
+        for entry in feed.entries[:10]:
+            # 1. 제목과 매체 분리
             full_title = entry.title
-            title, media = full_title, "테크리포트"
+            title, media = full_title, "뉴스"
             if " - " in full_title:
                 parts = full_title.rsplit(" - ", 1)
                 title, media = parts[0], parts[1]
 
-            # 핵심: summary와 description 중 더 긴 것을 선택
-            raw_summary = entry.get('summary', '')
-            if len(entry.get('description', '')) > len(raw_summary):
-                raw_summary = entry.description
-                
-            summary = clean_summary(raw_summary, title)
+            # 2. RSS 원본 요약본 가져오기 (가공 최소화)
+            # summary_detail 혹은 summary에 담긴 원문을 그대로 사용합니다.
+            raw_desc = entry.get('summary', '')
+            
+            # HTML 태그만 제거 (내용 요약이나 문구 추가 절대 안 함)
+            clean_desc = re.sub('<[^<]+?>', '', raw_desc)
+            
+            # 구글 뉴스 특유의 꼬리말만 잘라내기
+            clean_desc = clean_desc.split("전체 기사 보기")[0].strip()
 
             all_news.append({
                 "media": media,
                 "title": title.strip(),
-                "desc": summary,
+                "desc": clean_desc,
                 "link": entry.link
             })
     except Exception as e:
@@ -67,41 +53,41 @@ def update_html(news_data):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Intelligence Deep Dive</title>
+    <title>Tech Intelligence Report</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        body {{ background: #f0f2f5; font-family: 'Pretendard', sans-serif; }}
+        body {{ background: #f8f9fa; font-family: 'Pretendard', sans-serif; color: #333; }}
         .header {{ 
-            background: #fff; padding: 50px 20px; border-bottom: 8px solid #0056b3;
-            text-align: center; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center; padding: 40px 20px; background: #fff; 
+            border-bottom: 6px solid #0056b3; margin-bottom: 30px; 
         }}
-        .designer {{ color: #0056b3; font-weight: 700; border: 2px solid #0056b3; display: inline-block; padding: 4px 15px; border-radius: 5px; margin-bottom: 10px; }}
+        .designer {{ color: #0056b3; font-weight: 700; border: 2px solid #0056b3; display: inline-block; padding: 3px 12px; border-radius: 5px; margin-bottom: 10px; font-size: 0.9rem; }}
         .news-grid {{ max-width: 800px; margin: 0 auto; padding: 0 15px 60px; }}
         .news-card {{ 
-            background: #fff; border-radius: 20px; padding: 30px; margin-bottom: 25px; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.06); border-left: 10px solid #0056b3;
+            background: #fff; border-radius: 15px; padding: 25px; margin-bottom: 20px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 6px solid #0056b3;
             text-decoration: none; display: block; color: inherit;
         }}
-        .badge-media {{ background: #e7f1ff; color: #0056b3; font-weight: 800; padding: 5px 15px; border-radius: 30px; font-size: 0.85rem; }}
-        .card-title {{ font-size: 1.35rem; font-weight: 800; color: #111; margin: 15px 0; line-height: 1.4; }}
-        .card-desc {{ font-size: 1.02rem; color: #444; line-height: 1.8; text-align: justify; background: #f8f9fa; padding: 20px; border-radius: 12px; }}
+        .badge-media {{ background: #e7f1ff; color: #0056b3; font-weight: 700; padding: 4px 10px; border-radius: 5px; font-size: 0.8rem; }}
+        .card-title {{ font-size: 1.25rem; font-weight: 800; color: #000; margin: 12px 0; line-height: 1.4; }}
+        .card-desc {{ font-size: 1rem; color: #444; line-height: 1.7; text-align: justify; }}
     </style>
 </head>
 <body>
-    <div class="header">
+    <header class="header">
         <div class="designer">Designed by chipdory.hwang</div>
-        <h1 class="fw-bold">Tech Intelligence Deep Dive</h1>
-        <p class="text-muted small">반도체 · AI · IT 전문 리포트 ({today})</p>
-    </div>
+        <h2 class="fw-bold">Tech Intelligence Report</h2>
+        <p class="text-muted small mb-0">{today} 업데이트</p>
+    </header>
     <div class="news-grid">
     """
     for i, news in enumerate(news_data):
         html_content += f"""
         <a href="{news['link']}" target="_blank" class="news-card">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">{news['media']}</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">{i+1:02d}</span>
+                <span style="color:#eee; font-weight:900; font-size:1.5rem;">{i+1:02d}</span>
             </div>
             <div class="card-title">{news['title']}</div>
             <div class="card-desc">{news['desc']}</div>

@@ -2,55 +2,56 @@ import feedparser
 import datetime
 import ssl
 import re
+import requests
+from bs4 import BeautifulSoup
 
-# SSL 보안 에러 무시 설정
+# 보안 설정
 ssl._create_default_https_context = ssl._create_unverified_context
 
-def clean_text(text):
-    """HTML 태그 제거 및 불필요한 공백 정리"""
-    if not text: return ""
-    text = re.sub('<[^<]+?>', '', text) # 모든 HTML 태그 제거
-    text = text.replace('&nbsp;', ' ').replace('&quot;', '"').replace('&amp;', '&')
-    return text.strip()
+def get_full_summary(url):
+    """기사 원문 링크에서 본문을 가져와 요약함"""
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+        response = requests.get(url, headers=headers, timeout=10)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # 본문 텍스트 추출 (p 태그 위주)
+        paragraphs = soup.find_all('p')
+        content = " ".join([p.get_text() for p in paragraphs if len(p.get_text()) > 30])
+        
+        content = re.sub(r'\s+', ' ', content).strip()
+        if len(content) > 350:
+            return content[:350] + "..."
+        return content if len(content) > 50 else None
+    except:
+        return None
 
 def get_latest_news():
     all_news = []
-    # 검색어를 더 구체화하여 풍성한 기사를 유도 (최신순 정렬)
     target_url = "https://news.google.com/rss/search?q=%EB%B0%98%EB%8F%84%EC%B2%B4+OR+AI+OR+IT+OR+%EA%B3%BC%ED%95%99&hl=ko&gl=KR&ceid=KR:ko"
     
-    user_agent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1'
-    
     try:
-        feed = feedparser.parse(target_url, agent=user_agent)
+        feed = feedparser.parse(target_url)
         
-        for entry in feed.entries[:12]: # 중복 대비 12개 수집 후 10개 추출
+        for entry in feed.entries:
             if len(all_news) >= 10: break
             
-            # 매체명과 제목 분리
             full_title = entry.title
-            title = full_title
-            media = "IT 이슈"
+            title, media = full_title, "테크리포트"
             if " - " in full_title:
                 parts = full_title.rsplit(" - ", 1)
                 title, media = parts[0], parts[1]
 
-            # 요약 내용 보강
-            # RSS의 'summary' 혹은 'description'에서 더 긴 내용을 선택
-            raw_content = entry.get('summary', '') or entry.get('description', '')
-            content = clean_text(raw_content)
-            
-            # 구글 뉴스 특유의 '매체별 링크 모음' 텍스트 제거
-            if "전체 기사 보기" in content:
-                content = content.split("전체 기사 보기")[0]
-
-            # 내용이 너무 짧으면 제목을 활용해 문장 완성
-            if len(content) < 40:
-                content = f"[{media} 핵심 보도] {title} 관련 최신 소식입니다. 기술 업계의 주요 흐름을 반영하는 뉴스입니다."
+            # 본문 요약 가져오기
+            detailed_desc = get_full_summary(entry.link)
+            if not detailed_desc:
+                detailed_desc = re.sub('<[^<]+?>', '', entry.summary).split("전체 기사 보기")[0]
 
             all_news.append({
                 "media": media,
                 "title": title.strip(),
-                "desc": content.strip()
+                "desc": detailed_desc.strip(),
+                "link": entry.link # 기사 원문 링크 저장
             })
     except Exception as e:
         print(f"Error: {e}")
@@ -59,7 +60,6 @@ def get_latest_news():
 
 def update_html(news_data):
     if not news_data: return
-
     today = datetime.datetime.now().strftime("%Y.%m.%d %H:%M")
     
     html_content = f"""
@@ -68,63 +68,59 @@ def update_html(news_data):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Intelligence Report</title>
+    <title>Tech Intelligence Deep Dive</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        body {{ background: #f4f7fa; font-family: 'Pretendard', sans-serif; color: #333; }}
+        body {{ background: #f8f9fa; font-family: 'Pretendard', sans-serif; color: #212529; }}
         .header {{ 
-            text-align: center; padding: 50px 20px; background: linear-gradient(135deg, #0056b3 0%, #003d7a 100%); 
-            color: white; border-radius: 0 0 30px 30px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: #ffffff; padding: 50px 20px; border-bottom: 8px solid #0056b3;
+            text-align: center; margin-bottom: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }}
-        .designer {{ font-size: 1rem; opacity: 0.9; font-weight: 500; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.4); display: inline-block; padding: 2px 12px; border-radius: 20px; }}
-        .news-grid {{ max-width: 850px; margin: 0 auto; padding: 0 15px 60px; }}
+        .designer {{ color: #0056b3; font-weight: 700; border: 2px solid #0056b3; display: inline-block; padding: 4px 15px; border-radius: 5px; margin-bottom: 15px; }}
+        .news-grid {{ max-width: 900px; margin: 0 auto; padding: 0 15px 80px; }}
+        
+        /* 카드 디자인 및 링크 설정 */
         .news-card {{ 
-            background: #fff; border-radius: 18px; padding: 28px; margin-bottom: 25px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: 1px solid #eef2f6;
-            transition: all 0.3s ease;
+            background: #fff; border-radius: 20px; padding: 35px; margin-bottom: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-left: 8px solid #0056b3;
+            text-decoration: none; display: block; color: inherit; transition: all 0.2s ease-in-out;
         }}
-        .badge-media {{ background: #e7f1ff; color: #0056b3; font-weight: 700; padding: 6px 14px; border-radius: 10px; font-size: 0.85rem; }}
-        .card-title {{ font-size: 1.3rem; font-weight: 800; color: #111; margin: 18px 0 12px; line-height: 1.5; }}
-        .card-desc {{ font-size: 1.05rem; color: #555; line-height: 1.8; text-align: justify; word-break: break-all; }}
-        .footer {{ text-align: center; padding-bottom: 40px; color: #888; font-size: 0.9rem; }}
-        @media (max-width: 768px) {{
-            .header {{ padding: 40px 15px; }}
-            .card-title {{ font-size: 1.15rem; }}
-            .card-desc {{ font-size: 0.98rem; }}
-        }}
+        .news-card:hover {{ transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.12); border-left-color: #003d7a; }}
+        
+        .badge-media {{ background: #f1f8ff; color: #0056b3; font-weight: 800; padding: 6px 16px; border-radius: 30px; font-size: 0.9rem; }}
+        .card-title {{ font-size: 1.4rem; font-weight: 800; color: #1a1a1a; margin: 20px 0 15px; line-height: 1.4; }}
+        .card-desc {{ font-size: 1.05rem; color: #444; line-height: 1.9; text-align: justify; border-top: 1px solid #f0f0f0; padding-top: 15px; }}
+        .read-more {{ margin-top: 15px; display: inline-block; color: #0056b3; font-weight: 700; font-size: 0.95rem; }}
+        .footer {{ text-align: center; color: #95a5a6; padding-bottom: 50px; }}
     </style>
 </head>
 <body>
-    <header class="header">
+    <div class="header">
         <div class="designer">Designed by chipdory.hwang</div>
-        <h1 class="fw-bold">Tech Intelligence Report</h1>
-        <p class="mb-0 opacity-75">{today} | 반도체 · AI · IT · 과학</p>
-    </header>
+        <h1 class="fw-bold">Tech Intelligence Deep Dive</h1>
+        <p class="text-muted mb-0">인공지능·반도체 전문 리포트 | {today}</p>
+    </div>
     <div class="news-grid">
     """
-    
     for i, news in enumerate(news_data):
         html_content += f"""
-        <div class="news-card">
+        <a href="{news['link']}" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">{news['media']}</span>
-                <span style="color:#e9ecef; font-weight:900; font-size:1.8rem;">{i+1:02d}</span>
+                <span style="color:#eee; font-weight:900; font-size:2rem;">{i+1:02d}</span>
             </div>
             <div class="card-title">{news['title']}</div>
             <div class="card-desc">{news['desc']}</div>
-        </div>
+            <div class="read-more">원문 기사 읽기 →</div>
+        </a>
         """
-
     html_content += """
     </div>
-    <div class="footer">
-        매일 오전 6시 자동으로 업데이트 됩니다.
-    </div>
+    <div class="footer">매일 아침 6시, 딥다이브 리포트가 업데이트됩니다.</div>
 </body>
 </html>
     """
-    
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_content)
 

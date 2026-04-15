@@ -4,143 +4,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Intelligence Deep Dive</title>
+    <title>Tech Deep Dive Report</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        body { background: #f8f9fa; font-family: 'Pretendard', sans-serif; color: #212529; }
+        body { background: #f4f6f9; font-family: 'Pretendard', sans-serif; color: #334155; }
         .header { 
-            background: #ffffff; padding: 50px 20px; border-bottom: 8px solid #0056b3;
-            text-align: center; margin-bottom: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 60px 20px; 
+            text-align: center; margin-bottom: 40px; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
-        .designer { color: #0056b3; font-weight: 700; border: 2px solid #0056b3; display: inline-block; padding: 4px 15px; border-radius: 5px; margin-bottom: 15px; }
-        .news-grid { max-width: 900px; margin: 0 auto; padding: 0 15px 80px; }
-        
-        /* 카드 디자인 및 링크 설정 */
+        .designer { border: 1.5px solid #38bdf8; color: #38bdf8; display: inline-block; padding: 4px 16px; border-radius: 50px; margin-bottom: 15px; font-weight: 600; font-size: 0.9rem; }
+        .news-grid { max-width: 850px; margin: 0 auto; padding: 0 15px 80px; }
         .news-card { 
-            background: #fff; border-radius: 20px; padding: 35px; margin-bottom: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-left: 8px solid #0056b3;
-            text-decoration: none; display: block; color: inherit; transition: all 0.2s ease-in-out;
+            background: #fff; border-radius: 24px; padding: 35px; margin-bottom: 30px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
+            text-decoration: none; display: block; color: inherit; transition: all 0.3s ease;
         }
-        .news-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.12); border-left-color: #003d7a; }
-        
-        .badge-media { background: #f1f8ff; color: #0056b3; font-weight: 800; padding: 6px 16px; border-radius: 30px; font-size: 0.9rem; }
-        .card-title { font-size: 1.4rem; font-weight: 800; color: #1a1a1a; margin: 20px 0 15px; line-height: 1.4; }
-        .card-desc { font-size: 1.05rem; color: #444; line-height: 1.9; text-align: justify; border-top: 1px solid #f0f0f0; padding-top: 15px; }
-        .read-more { margin-top: 15px; display: inline-block; color: #0056b3; font-weight: 700; font-size: 0.95rem; }
-        .footer { text-align: center; color: #95a5a6; padding-bottom: 50px; }
+        .news-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: #38bdf8; }
+        .badge-media { background: #f0f9ff; color: #0369a1; font-weight: 800; padding: 6px 14px; border-radius: 8px; font-size: 0.85rem; }
+        .card-title { font-size: 1.45rem; font-weight: 800; color: #0f172a; margin: 20px 0 15px; line-height: 1.4; }
+        .card-desc { font-size: 1.05rem; color: #475569; line-height: 1.85; text-align: justify; background: #f8fafc; padding: 20px; border-radius: 15px; }
+        .footer { text-align: center; color: #94a3b8; padding-bottom: 50px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="designer">Designed by chipdory.hwang</div>
-        <h1 class="fw-bold">Tech Intelligence Deep Dive</h1>
-        <p class="text-muted mb-0">인공지능·반도체 전문 리포트 | 2026.04.15 05:04</p>
+        <h1 class="fw-bold mb-3">Tech Intelligence Deep Dive</h1>
+        <p class="opacity-75 mb-0">인공지능 · 반도체 · 과학기술 전문 분석 리포트</p>
+        <p class="small mt-2 opacity-50">업데이트: 2026.04.15 05:07</p>
     </div>
     <div class="news-grid">
     
         <a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTFBLZUNQM1JQV1JtSU5vMVlkS1E5Y0oxck1vYThrLU1Ga2NrWFFVNmpZUjhGQmh2SnJHakxoclVlMVBqWnVtREV2NTR3TUp2VjNSWDJjZ1BR?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">중앙일보</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">01</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">01</span>
             </div>
             <div class="card-title">“하반기 삼전닉스보다 더 뛴다” 전쟁에도 뜬 반도체 K장비주 5</div>
-            <div class="card-desc">“하반기 삼전닉스보다 더 뛴다” 전쟁에도 뜬 반도체 K장비주 5&nbsp;&nbsp;중앙일보</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-desc">[본문 추출 제한] “하반기 삼전닉스보다 더 뛴다” 전쟁에도 뜬 반도체 K장비주 5&nbsp;&nbsp;중앙일보 (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
         <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE5zRWZReXc1eUc1WWVKOXktdVkwX0tfcjd5SFVKd1dVMVIyQzVROHR5NUd6bjJMcEhyazNVZGpKSnVnTVUwSno2Ym9oY3FDTV85U19fZmlCQWZZd9IBVEFVX3lxTE03N1J0WjU5SEpyVDVRQ3RiOVh2NUd3eTdNTTJfejlBRUdFZ3huVzhGREhPUmIyWTRJY2xLZHpYeXdwTHkxVUFrTHpxT193R2RfRnJKaw?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">한국경제</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">02</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">02</span>
             </div>
             <div class="card-title">"망한다" 비웃던 일본 꺾었다…'AI 심장' 겨눈 반도체의 나라</div>
-            <div class="card-desc">"망한다" 비웃던 일본 꺾었다…'AI 심장' 겨눈 반도체의 나라&nbsp;&nbsp;한국경제</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-desc">[본문 추출 제한] "망한다" 비웃던 일본 꺾었다…'AI 심장' 겨눈 반도체의 나라&nbsp;&nbsp;한국경제 (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
         <a href="https://news.google.com/rss/articles/CBMi2AJBVV95cUxOSnQ0TWJSekR5eFlkOGxFTl9SZlVKR29jcTFIMVQ1ZWRGZE4xMjJZZG80MnhINHlmelNaTnFzNlhfalV6eVFQM00zQnpSYXNtMU5hOC1pc1J3b2NoN2plWmxyMUJldmNVMzc0LTdUQTBabVJiMTdnRFdUX2g3b3VXMzlWOUI2Y1d3VHJJNkJ3ZFlubm1UdXhhd1hJY0M1dXJrcWlneWhXYkF3dDR5VDhTUGRzS2JoMG4xaGsySkdlU19yRFo0dTZNTzF1ZHh6TEhmTmVkRG93TFVvN3M0bG9IeEhlSjcxX3N5bFk1SXNFV1FzelFVNGxMdWFINGhmQ3A2UFdsNGM3UXVQMjY3QjYtUkE5bFNTNzJPbk15NmxuQnowWlFSeFIzcHRlbE9vbGNvbDJvMHFXU19kVTRSU3FieVhhLVhxM3pJTmxaTHhNaHRYX1JfQmt4dg?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">이글루코퍼레이션</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">03</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">03</span>
             </div>
             <div class="card-title">[AI Report] AI 패권 경쟁의 현재: 빅테크는 어디에 돈을 쓰고 있는가</div>
-            <div class="card-desc">[AI Report] AI 패권 경쟁의 현재: 빅테크는 어디에 돈을 쓰고 있는가&nbsp;&nbsp;이글루코퍼레이션</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-desc">[본문 추출 제한] [AI Report] AI 패권 경쟁의 현재: 빅테크는 어디에 돈을 쓰고 있는가&nbsp;&nbsp;이글루코퍼레이션 (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
         <a href="https://news.google.com/rss/articles/CBMisgJBVV95cUxPeV9QcWMxdE1XREF4dWdmaUlYaEdwREV2VjNsd1V6eTBuTjFKaWI0TUN0UTdHY1V6OFZUbnNKZ0V0UnpVWG16dWdJbUxrNmJIMy1BQmRSU3M0VXhGQzlHUlNXdHNkMmhxcHVWam1OSlZMTlNLYXlaQ3M5SVdGUXg2NWZCSTVNeXM1aFRPQlZCX2JsaXhEWXJlU08zZGVrXzVPS0RFVHQ5ZEFYcWh1VUZOMXhNRTYtVndvTUZYWjVWNF9DNjZNczhwVWswWEEzbHc0MGhlVnoxUERvcm1uOG5SR1hVTWktbDIyU0tIV1lCVGNVVUdsMmppUkJSbEhfOUxId3ZUdlc5RHNobWZ6R2hZV0xWaE42SmJxZEI1ZHd1bFY4RUVpTDVZSlc4RVprZ2Y4TVE?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">samsung.com</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">04</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">04</span>
             </div>
             <div class="card-title">삼성전자, 2026년형 TV 신제품 출시…AI TV 대중화 시대 연다</div>
-            <div class="card-desc">삼성전자, 2026년형 TV 신제품 출시…AI TV 대중화 시대 연다&nbsp;&nbsp;samsung.com</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-desc">[본문 추출 제한] 삼성전자, 2026년형 TV 신제품 출시…AI TV 대중화 시대 연다&nbsp;&nbsp;samsung.com (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
         <a href="https://news.google.com/rss/articles/CBMigwFBVV95cUxPYTB2dTZMTEZFbVc4cGlQMGlwRTAxY2hCcTNyS25kWTJ5ZGJRVksyTF9YYjBSN0w3NDZfMHNjSHdmVnBZbFo0Zk5pUlc4a2FfTy1DY1hhRHJXSDBNTU1YdFlKZ2NxOU9mQU94WmpwcjcyVDZWZnNtdjNVYUxQa1hEQ1NMYw?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">조선일보</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">05</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">05</span>
             </div>
             <div class="card-title">美, 구형 반도체 장비 中 수출도 막는다... 첨단 기술 이어 생산 능력까지 차단 나서</div>
-            <div class="card-desc">美, 구형 반도체 장비 中 수출도 막는다... 첨단 기술 이어 생산 능력까지 차단 나서&nbsp;&nbsp;조선일보</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-desc">[본문 추출 제한] 美, 구형 반도체 장비 中 수출도 막는다... 첨단 기술 이어 생산 능력까지 차단 나서&nbsp;&nbsp;조선일보 (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
         <a href="https://news.google.com/rss/articles/CBMi9gFBVV95cUxNZ0dkNGJWOEFlZnNfTHJ0OGJ5T3dMWnZfUUg3MmhnZmpiRDQ4SmpzdmV6eDlsdFVvazNielBXUUNuajlzRHQxZmRDSUFqRmpaeWtJOHFCbHhsaVNMVnNxU0RMNWlqRkt1b3FMVDFVNGVWM3RsNU1ST1B3NG1ldGZOOENCdlEyYUhfWFFnb1cxTWJlVGUtZGtYS3ZSM3pzTWJTQUs5Ui1zOC1pTjc3STZ0ZTgzcXd5SXRQekwxV0c2aEE0eWNEbUNzQ2o5a3YybHVsZkh2VXNKNHFpU1M3a1hObURrQlJZZnBhd201UkpDTWFSTm9DVnc?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">문화체육관광부 한국문화원</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">06</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">06</span>
             </div>
             <div class="card-title">코리아넷뉴스 - 한국, 인구당 AI 특허 세계 1위···'주목할 만한 모델' 보유 3위</div>
-            <div class="card-desc">코리아넷뉴스 - 한국, 인구당 AI 특허 세계 1위···'주목할 만한 모델' 보유 3위&nbsp;&nbsp;문화체육관광부 한국문화원</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-desc">[본문 추출 제한] 코리아넷뉴스 - 한국, 인구당 AI 특허 세계 1위···'주목할 만한 모델' 보유 3위&nbsp;&nbsp;문화체육관광부 한국문화원 (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
         <a href="https://news.google.com/rss/articles/CBMia0FVX3lxTE16YTRJWWQ3TVluZVJKLV85QUJqaDJMWkRPNVlhRjkweW1OR2dSdUs1SWE4cUl3OGRTa1lVSGNOSFhyc3Zsb3dVT2hqa3dfMUhXTHBqNHVsVHQtOGxWUlI4NFZqTUpBLS1tWVN3?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">히트뉴스</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">07</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">07</span>
             </div>
             <div class="card-title">복지부, 권역책임의료기관 AI 진료시스템 도입 120억 지원</div>
-            <div class="card-desc">복지부, 권역책임의료기관 AI 진료시스템 도입 120억 지원&nbsp;&nbsp;히트뉴스</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-desc">[본문 추출 제한] 복지부, 권역책임의료기관 AI 진료시스템 도입 120억 지원&nbsp;&nbsp;히트뉴스 (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
         <a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTFBFTnVoa3BqLU1tU3NqN0hrMHc2TVJYcXpUMEdTMTFIYUQ3YktMM3h2MW8yWUJkVTFxUXBtSGI1TGQwM3lBM3c4dVpoY3FyM1U?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">v.daum.net</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">08</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">08</span>
             </div>
             <div class="card-title">영국·프랑스도 제쳤다... 한국, '주목할 만한 AI 모델' 보유국 세계 3위</div>
-            <div class="card-desc">영국·프랑스도 제쳤다... 한국, '주목할 만한 AI 모델' 보유국 세계 3위&nbsp;&nbsp;v.daum.net</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-desc">[본문 추출 제한] 영국·프랑스도 제쳤다... 한국, '주목할 만한 AI 모델' 보유국 세계 3위&nbsp;&nbsp;v.daum.net (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
         <a href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFBpNHNQSW4wZzlzRFp1el94cndNc2tMYVZ1QlJweHVSRUpHaGI2Y2wxM0FjVXZvTlkzdjJfZWhHS2RudVpZOUE3SkdCdU5wRVRlN3B4aDJ4MEJZMknSAWBBVV95cUxNWkZ4Wmw2cndFU2x1QWZhaFQyZVJlWTZ1S0txSWllWmFTM3N5Mmxmd1Z6aWFaLWU4WXhNa09xOUV3MUc5YmNicXF2ZXJubnlPLVlfcEFBb3Y1WFlURlRETVc?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="badge-media">연합뉴스</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">09</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">09</span>
             </div>
             <div class="card-title">정책평가연구원, '페리AI 2.0' 출시…정책 분석·예측 기능까지</div>
-            <div class="card-desc">정책평가연구원, '페리AI 2.0' 출시…정책 분석·예측 기능까지&nbsp;&nbsp;연합뉴스</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-desc">[본문 추출 제한] 정책평가연구원, '페리AI 2.0' 출시…정책 분석·예측 기능까지&nbsp;&nbsp;연합뉴스 (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
-        <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE1JRmgwVTd4SlV5NGdia0t3akppNThMZkJkN0NVaDlsVDNVaVlkcnhXQVVuN2Z3V2JMQ1VpU3hLa2szM19PTUE1ajRFUnhIQXNoQ29WbVdTUG5lMGxXdlNQbm9hRkI0TnJKMlE?oc=5" target="_blank" class="news-card">
+        <a href="https://news.google.com/rss/articles/CBMiTkFVX3lxTE01TjRvQncydDhwQXhxYmNvZ0dTWENJUEtoNGYxUElscmhmbVNCUU16TUktZmhlX3BZUVhmZzFoMTJhOWcyel9UUzVzaXVFdw?oc=5" target="_blank" class="news-card">
             <div class="d-flex justify-content-between align-items-center">
-                <span class="badge-media">의학신문</span>
-                <span style="color:#eee; font-weight:900; font-size:2rem;">10</span>
+                <span class="badge-media">전자신문</span>
+                <span style="color:#f1f5f9; font-weight:900; font-size:2.5rem;">10</span>
             </div>
-            <div class="card-title">국립대병원 등 권역책임기관 AI 진료시스템 120억 지원</div>
-            <div class="card-desc">국립대병원 등 권역책임기관 AI 진료시스템 120억 지원&nbsp;&nbsp;의학신문</div>
-            <div class="read-more">원문 기사 읽기 →</div>
+            <div class="card-title">삼성전자, TV 전 라인업 AI 탑재…“일상 동반자” 선언</div>
+            <div class="card-desc">[본문 추출 제한] 삼성전자, TV 전 라인업 AI 탑재…“일상 동반자” 선언&nbsp;&nbsp;전자신문 (자세한 내용은 원문을 참고하세요)</div>
+            <div class="mt-3 text-end" style="color:#0369a1; font-weight:700; font-size:0.9rem;">원문 전체보기 →</div>
         </a>
         
     </div>
-    <div class="footer">매일 아침 6시, 딥다이브 리포트가 업데이트됩니다.</div>
+    <div class="footer">본 리포트는 매일 아침 6시에 신규 데이터를 기반으로 생성됩니다.</div>
 </body>
 </html>
     

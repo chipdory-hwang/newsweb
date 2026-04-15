@@ -96,3 +96,15 @@ if __name__ == "__main__":
     news = get_latest_news()
     if news:
         update_html(news)
+if __name__ == "__main__":
+    news = get_latest_news()
+    
+    # 만약 뉴스를 하나도 못 가져왔을 때를 대비한 기본 뉴스 추가
+    if not news:
+        news = [{
+            "media": "안내",
+            "title": "현재 뉴스를 불러오는 중입니다.",
+            "desc": "잠시 후 다시 확인해 주세요. 수집 장치에 일시적인 지연이 발생했습니다."
+        }]
+    
+    update_html(news)

@@ -1,8 +1,8 @@
-name: Daily News Scraper
+name: Daily News Scraper & Mailer
 
 on:
   schedule:
-    - cron: '0 21 * * *'
+    - cron: '0 21 * * *' # 한국 시간 매일 오전 6시
   workflow_dispatch:
 
 permissions:
@@ -21,14 +21,12 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: |
-          pip install feedparser
+        run: pip install feedparser
 
       - name: Run news update script
         env:
           PYTHONIOENCODING: utf-8
-        run: |
-          python update_news.py
+        run: python update_news.py
 
       - name: Commit and Push changes
         run: |
@@ -36,3 +34,16 @@ jobs:
           git config --local user.name "GitHub Action"
           git add index.html
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update news report" && git push)
+
+      - name: Send News Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: "[Daily Tech Intelligence] 오늘의 핵심 리포트가 도착했습니다"
+          to: chipdory@gmail.com
+          from: GitHub Action Reporter
+          html_body: file://index.html # 생성된 index.html 내용을 메일 본문으로 전송
+          content_type: text/html

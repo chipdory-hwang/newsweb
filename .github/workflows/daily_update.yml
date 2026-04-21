@@ -2,7 +2,7 @@ name: Daily News Scraper & Mailer
 
 on:
   schedule:
-    - cron: '0 21 * * *' # 한국 시간 매일 오전 6시
+    - cron: '13 20 * * *' # 한국 시간 매일 오전 5시 13분
   workflow_dispatch:
 
 permissions:
